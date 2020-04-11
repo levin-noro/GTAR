@@ -234,7 +234,9 @@ public class Dummy {
 				System.err.println("avgDegreeOfFocusNodes is zero!");
 				return 0;
 			}
-
+			
+			
+			System.out.println(avgOutDegreeOfFocusNodes / numberOfAllFocusNodes);
 			return avgOutDegreeOfFocusNodes / numberOfAllFocusNodes;
 		}
 

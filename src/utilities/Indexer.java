@@ -171,9 +171,9 @@ public class Indexer {
 
 			maxNodeId = Math.max(maxNodeId, id);
 
-			if (!usefulStaticNodes.contains(id)) {
-				continue;
-			}
+//			if (!usefulStaticNodes.contains(id)) {
+//				continue;
+//			}
 
 			temporalNeighborhoodIndex.put(id, new HashMap<>());
 
@@ -185,9 +185,20 @@ public class Indexer {
 
 			for (Relationship outgoingRel : n.getRelationships(Direction.OUTGOING)) {
 
-				ArrayList<Integer> timePoints = TimeIntervalsOperation
-						.getArrayListOfArray((int[]) outgoingRel.getProperty("timepoints"));
-
+//				String temp = (String) outgoingRel.getProperty("timepoints");
+//				String[] tempList = temp.split(";");
+//				int[] tempTimePoints = new int[tempList.length]; int i = 0;
+//				for (String item:tempList) {
+//					tempTimePoints[i] = Integer.parseInt(tempList[i]);
+//					i++;
+//				}
+//					
+//				ArrayList<Integer> timePoints = TimeIntervalsOperation
+//						.getArrayListOfArray(tempTimePoints);
+				ArrayList<Integer> timePoints = new ArrayList<Integer>();
+				timePoints.add(0);
+				timePoints.add(1);
+				
 				Node otherNode = outgoingRel.getOtherNode(n);
 				String nextType = otherNode.getLabels().iterator().next().name().toString()
 						+ DummyProperties.SEPARATOR_LABEL_AND_RELTYPE + outgoingRel.getType().toString();
@@ -206,8 +217,20 @@ public class Indexer {
 
 			for (Relationship incomingRel : n.getRelationships(Direction.INCOMING)) {
 
-				ArrayList<Integer> timePoints = TimeIntervalsOperation
-						.getArrayListOfArray((int[]) incomingRel.getProperty("timepoints"));
+//				String temp = (String) incomingRel.getProperty("timepoints");
+//				String[] tempList = temp.split(";");
+//				int[] tempTimePoints = new int[tempList.length]; int i = 0;
+//				for (String item:tempList) {
+//					tempTimePoints[i] = Integer.parseInt(tempList[i]);
+//					i++;
+//				}
+//					
+//				ArrayList<Integer> timePoints = TimeIntervalsOperation
+//						.getArrayListOfArray(tempTimePoints);
+				
+				ArrayList<Integer> timePoints = new ArrayList<Integer>();
+				timePoints.add(0);
+				timePoints.add(1);
 
 				Node otherNode = incomingRel.getOtherNode(n);
 				String prevType = otherNode.getLabels().iterator().next().name().toString()
@@ -228,7 +251,7 @@ public class Indexer {
 			}
 		}
 
-		// printTemporalNeighborhoodIndex();
+		printTemporalNeighborhoodIndex();
 
 		// tx1.success();
 		// tx1.close();
@@ -495,6 +518,8 @@ public class Indexer {
 
 			// For Performance and memory
 			if (!usefulStaticNodes.contains((int) node.getId())) {
+				
+				
 				continue;
 			}
 
@@ -514,7 +539,7 @@ public class Indexer {
 					node.getDegree(Direction.INCOMING), node.getDegree(
 							Direction.OUTGOING)/* , prevNodeIds, nextNodeIds */));
 		}
-		// System.out.println();
+		 System.out.println("inside generateDegreeMap");
 	}
 
 	// private void addPreviousNodesToMatrix(Integer parentId, Integer thisId,
@@ -889,7 +914,7 @@ public class Indexer {
 	public void findUsefulNodesSet(int dHops, GraphDatabaseService temporalGraph, HashSet<Integer> allFocusNodes,
 			String focus) throws Exception {
 		String replacedFocus = focus.replace("|", "").replace(":", "").replace(",", "");
-		String filePath = "usefulNodeIndex/" + replacedFocus + "_" + dHops + ".txt";
+		String filePath = "/Users/Levin/Downloads/" + replacedFocus + "_" + dHops + ".txt";
 		File indexOfUsefulsNodeFile = new File(filePath);
 
 		if (indexOfUsefulsNodeFile.exists()) {
@@ -919,7 +944,7 @@ public class Indexer {
 
 			usefulStaticNodes.addAll(allNodesInTwoHopsSet);
 
-			if (DummyProperties.debugMode) {
+			if (true) {
 				System.out.println("allFocusNodes: " + allFocusNodes.size());
 				System.out.println("allNodesInTwoHopsSet: " + allNodesInTwoHopsSet.size());
 				System.out.println("allNodesInTwoHops: " + allNodesInTwoHops);

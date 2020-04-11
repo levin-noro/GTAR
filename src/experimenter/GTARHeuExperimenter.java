@@ -68,16 +68,17 @@ public class GTARHeuExperimenter {
 			throw new Exception(
 					"input parameters: allFocusLinesPath, dataGraphPath, supportThresholds,  maxAllowedEdges, maxAllowedEdges, maxAllowedHops, confidenceThresholds, deltaTs");
 		} else {
-			System.out.println("-allFocusLinesPath  " + allFocusLinesPath + "\n -dataGraphPath:" + dataGraphPath
-					+ "\n -maxAllowedHops: " + Arrays.toString(maxAllowedHops) + "\n -maxAllowedEdges:"
-					+ Arrays.toString(maxAllowedEdges) + "\n -supportThresholds: " + Arrays.toString(supportThresholds)
-					+ "\n -confidenceThresholds: " + Arrays.toString(confidenceThresholds) + "\n -deltaTs: "
-					+ Arrays.toString(deltaTs) + "\n -numberOfSameExperiments:  " + numberOfSameExperiments
+			System.out.println("-allFocusLinesPath  " + allFocusLinesPath + "\n-dataGraphPath:" + dataGraphPath
+					+ "\n-maxAllowedHops: " + Arrays.toString(maxAllowedHops) + "\n-maxAllowedEdges:"
+					+ Arrays.toString(maxAllowedEdges) + "\n-supportThresholds: " + Arrays.toString(supportThresholds)
+					+ "\n-confidenceThresholds: " + Arrays.toString(confidenceThresholds) + "\n-deltaTs: "
+					+ Arrays.toString(deltaTs) + "\n-numberOfSameExperiments:  " + numberOfSameExperiments
 
 			);
 		}
 
-		DummyProperties.debugMode = debugMode;
+
+		DummyProperties.debugMode = true;
 
 		// read from each line of all focus lines path and create a
 		// focusSetFile....
@@ -128,40 +129,6 @@ public class GTARHeuExperimenter {
 								if (e < h)
 									continue;
 
-								// DummyProperties.hasOptimization = true;
-								// for (int exp = 0; exp < Math.max(1,
-								// numberOfSameExperiments - 1); exp++) {
-								// GTARFinderTwoSteps gTARFinderTwoSteps = new
-								// GTARFinderTwoSteps("focusSet.txt", h, e,
-								// dataGraphPath, debugMode, s, c, t, 0);
-								// gTARFinderTwoSteps.findGTARs();
-								//
-								// String settingStr = " focus was " + line + ",
-								// h:" + h + " , e:" + e + ", s:" + s
-								// + ", c:" + c + ", deltaT:" + t;
-								//
-								// System.out.println("OPT GTARFinderTwoSteps
-								// Finder: exp " + exp + settingStr);
-								//
-								// int rules =
-								// DebugHelper.printingRules(bwTwoSteps,
-								// gTARFinderTwoSteps.lattice,
-								// settingStr);
-								//
-								// gTARFinderTwoSteps = null;
-								//
-								// if (rules == 0 && (s == supportThresholds[0]
-								// || c == supportThresholds[0])) {
-								// goToNextFocus = true;
-								// break;
-								// }
-								//
-								// sleepAndWakeUp();
-								// }
-								//
-								// if (goToNextFocus)
-								// break;
-
 								DummyProperties.hasOptimization = true;
 								for (int exp = 0; exp < numberOfSameExperiments; exp++) {
 									GTARFinderHeuristic gTARFinderHeuristic = new GTARFinderHeuristic("focusSet.txt", h,
@@ -177,49 +144,6 @@ public class GTARHeuExperimenter {
 									gTARFinderHeuristic = null;
 									sleepAndWakeUp();
 								}
-
-								// DummyProperties.hasOptimization = false;
-								// for (int exp = 0; exp <
-								// numberOfSameExperiments; exp++) {
-								// GTARFinderTwoSteps gTARFinderTwoSteps = new
-								// GTARFinderTwoSteps("focusSet.txt", h, e,
-								// dataGraphPath, debugMode, s, c, t);
-								// gTARFinderTwoSteps.findGTARs();
-								//
-								// String settingStr = " focus was " + line + ",
-								// h:" + h + " , e:" + e + ", s:" + s
-								// + ", c:" + c + ", deltaT:" + t;
-								//
-								// System.out.println("NON-OPT
-								// GTARFinderTwoSteps Finder: exp " + exp +
-								// settingStr);
-								//
-								// gTARFinderTwoSteps = null;
-								// sleepAndWakeUp();
-								// }
-								//
-								// DummyProperties.hasOptimization = false;
-								// for (int exp = 0; exp <
-								// numberOfSameExperiments; exp++) {
-								// GTARFinderHeuristic gTARFinderHeuristic = new
-								// GTARFinderHeuristic("focusSet.txt", h,
-								// e, dataGraphPath, debugMode, s, c, t);
-								// gTARFinderHeuristic.findGTARs();
-								//
-								// String settingStr = " focus was " + line +
-								// ",h:" + h + " , e:" + e + ", s:" + s
-								// + ", c:" + c + ", deltaT:" + t;
-								// System.out.println("NON-OPT
-								// GTARFinderHeuristic Finder: exp " + exp +
-								// settingStr);
-								//
-								// // DebugHelper.printingRules(bwHeuristic,
-								// // gTARFinderHeuristic.lattice, settingStr);
-								//
-								// gTARFinderHeuristic = null;
-								// sleepAndWakeUp();
-								// }
-
 							}
 						}
 					}

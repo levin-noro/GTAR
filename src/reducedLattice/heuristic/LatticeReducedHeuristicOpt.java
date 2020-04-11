@@ -122,7 +122,7 @@ public class LatticeReducedHeuristicOpt implements ILattice {
 	public int numberOfTotalRulesGenerated = 0;
 	public int numberOfMaximalRulesGenerated = 0;
 
-	private double gtarVerificationStartTime = 0d;
+	public double gtarVerificationStartTime = 0d;
 	public double gtarVerificationDuration = 0d;
 
 	public int lastQualitySavedInterval = 0;
@@ -242,11 +242,11 @@ public class LatticeReducedHeuristicOpt implements ILattice {
 
 		latticeNodeIndex.put(numberOfPatternsInLattice++, firstLevelChildPTNode);
 
-		if (DummyProperties.debugMode)
+		if (true)
 			System.out.println(
 					"Before: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1e9);
 		labelAdjacencyIndexer.generateTemporalNeighborhoodIndex(maxAllowedHops, whatIsFocus);
-		if (DummyProperties.debugMode)
+		if (true)
 			System.out.println(
 					"After: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1e9);
 

@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.TreeMap;
 
 import base.ILatticeNodeData;
+import reducedLattice.heuristic.LatticeReducedHeuristicOpt;
 import utilities.CumulativeRulesInfo;
 import utilities.DualSimulationHandler;
 import utilities.Dummy;
@@ -18,7 +19,7 @@ import utilities.Dummy.DummyProperties;
 
 public class RuleGenerator {
 
-	private LatticeReducedTwoStepsOpt lattice;
+	private LatticeReducedHeuristicOpt lattice;
 	private int deltaT;
 	private double supportThreshold;
 	private double confidenceThreshold;
@@ -32,16 +33,32 @@ public class RuleGenerator {
 	boolean timeout = false;
 	public double timebound = 0d;
 
-	public RuleGenerator(LatticeReducedTwoStepsOpt lattice, int maxAllowedEdges, int deltaT, double supportThreshold,
-			double confidenceThreshold, int minTimestamp, int maxTimestamp) {
+//	public RuleGenerator(LatticeReducedTwoStepsOpt lattice, int maxAllowedEdges, int deltaT, double supportThreshold,
+//			double confidenceThreshold, int minTimestamp, int maxTimestamp) {
+//
+//		this.lattice = lattice;
+//		this.deltaT = deltaT;
+//		this.supportThreshold = supportThreshold;
+//		this.confidenceThreshold = confidenceThreshold;
+//		this.minTimestamp = minTimestamp;
+//		this.maxTimestamp = maxTimestamp;
+//
+//	}
 
+	public RuleGenerator(LatticeReducedHeuristicOpt lattice, int maxAllowedEdges, int deltaT,
+			double supportThreshold, double confidenceThreshold, int minTimestamp, int maxTimestamp) {
 		this.lattice = lattice;
 		this.deltaT = deltaT;
 		this.supportThreshold = supportThreshold;
 		this.confidenceThreshold = confidenceThreshold;
 		this.minTimestamp = minTimestamp;
-		this.maxTimestamp = maxTimestamp;
+		this.maxTimestamp = maxTimestamp;	
+		
+	}
 
+	public RuleGenerator(LatticeReducedTwoStepsOpt lattice2, int maxAllowedEdges, int deltaT2, double supportThreshold2,
+			double confidenceThreshold2, int minTimestamp2, int maxTimestamp2) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void generateRules(double startTime, double ruleGeneratorStartTime) {
@@ -105,6 +122,7 @@ public class RuleGenerator {
 					// if it is not a potential rhs
 					if (DummyProperties.hasOptimization
 							&& rhsCandidate.getData().getTotalSupportFrequency() < supportThreshold) {
+						System.out.println();
 						continue;
 					}
 
@@ -161,7 +179,10 @@ public class RuleGenerator {
 			}
 			// checkTimeAndSaveQualityIfNeeded(lattice);
 		}
+		
+		
 
+		
 		HashSet<Rule> rules = new HashSet<>();
 		for (int index : lattice.getLatticeNodeIndex().keySet()) {
 			if (lattice.getLatticeNodeIndex().get(index).getData().getRulesOfThis().size() > 0) {

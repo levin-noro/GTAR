@@ -15,6 +15,7 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 
 import base.ILatticeNodeData;
+import reducedLattice.twoSteps.RuleGenerator;
 import utilities.CumulativeRulesInfo;
 import utilities.DebugHelper;
 import utilities.Dummy;
@@ -26,6 +27,7 @@ import utilities.Rule;
 import utilities.TimeIntervalsOperation;
 import utilities.TimeLogger;
 import utilities.Visualizer;
+import reducedLattice.heuristic.LatticeReducedHeuristicOpt;
 
 public class GTARFinderHeuristic {
 
@@ -124,7 +126,9 @@ public class GTARFinderHeuristic {
 	public void findGTARs() throws Exception {
 
 		loadDataGraph();
-
+		
+		
+		System.out.println("Inside findGTARs");
 		System.out.println("after indexing");
 
 		double startTime = System.nanoTime();
@@ -138,7 +142,16 @@ public class GTARFinderHeuristic {
 		System.out.println("latticeGenerationTime: " + latticeGenerationDuration + " miliseconds.");
 
 		int numberOfAllPatterns = lattice.bfsTraverse(lattice.emptyPTRootNode);
-
+		
+		
+		double ruleGeneratorStartTime = System.nanoTime();
+		
+		RuleGenerator rg = new RuleGenerator(lattice, maxAllowedEdges, deltaT, supportThreshold, confidenceThreshold, minTimestamp, maxTimestamp);
+		
+	//	rg.timebound = this.timebound;
+		rg.generateRules(startTime, ruleGeneratorStartTime);
+		double ruleGeneratorDuration = (System.nanoTime() - rg.ruleGeneratorStartTime) / 1e6;
+		
 		if (DummyProperties.visualize) {
 			for (int i = 1; i < maxAllowedEdges + 2; i++) {
 				Visualizer.visualizeALevel(lattice, i, i);
@@ -151,13 +164,14 @@ public class GTARFinderHeuristic {
 		// Extracting saved rules
 		ArrayList<Rule> rules = new ArrayList<>();
 		for (int index : lattice.latticeNodeIndex.keySet()) {
-			if (lattice.latticeNodeIndex.get(index).getData().getRulesOfThis().size() > 0) {
+			if (lattice.latticeNodeIndex.get(index).getData().getRulesOfThis().size() == 0) {
 				for (Rule rule : lattice.latticeNodeIndex.get(index).getData().getRulesOfThis()) {
 					// if (rule.lhs.getData().getPatternLatticeNodeIndex() == 84
 					// && rule.rhs.getData().getPatternLatticeNodeIndex() ==
 					// 142) {
 					// System.out.println("where?");
 					// }
+					System.out.println("The rule is "+rule);
 					rules.add(rule);
 					cumulativeSupport += rule.support;
 					cumulativeConfidence += rule.confidence;
@@ -361,17 +375,28 @@ public class GTARFinderHeuristic {
 		avgDegrees = Dummy.DummyFunctions.getAvgOutDegrees(dataGraph);
 		// STAT Of the DB END
 
+		minTimestamp = 0;
+		maxTimestamp = 1;
+		
 		// find min timestamp and max timestamp:
-		minTimestamp = Integer.MAX_VALUE;
-		maxTimestamp = 0;
+//		minTimestamp = Integer.MAX_VALUE;
+//		maxTimestamp = 0;
 
-		for (Relationship rel : dataGraph.getAllRelationships()) {
-			ArrayList<Integer> timePoints = TimeIntervalsOperation
-					.getArrayListOfArray((int[]) rel.getProperty("timepoints"));
-
-			minTimestamp = Math.min(minTimestamp, timePoints.get(0));
-			maxTimestamp = Math.max(maxTimestamp, timePoints.get(timePoints.size() - 1));
-		}
+//		for (Relationship rel : dataGraph.getAllRelationships()) {
+//			String temp = (String) rel.getProperty("timepoints");
+//			String[] tempList = temp.split(";");
+//			int[] tempTimePoints = new int[tempList.length]; int i = 0;
+//			for (String item:tempList) {
+//				tempTimePoints[i] = Integer.parseInt(tempList[i]);
+//				i++;
+//			}
+//				
+//			ArrayList<Integer> timePoints = TimeIntervalsOperation
+//					.getArrayListOfArray(tempTimePoints);
+//
+//			minTimestamp = Math.min(minTimestamp, timePoints.get(0));
+//			maxTimestamp = Math.max(maxTimestamp, timePoints.get(timePoints.size() - 1));
+//		}
 
 		System.out.println("minTimestamp:" + minTimestamp);
 		System.out.println("maxTimestamp:" + maxTimestamp);

@@ -97,7 +97,7 @@ public class GTARTester {
 			);
 		}
 
-		DummyProperties.debugMode = debugMode;
+		DummyProperties.debugMode = true;
 
 		// read from each line of all focus lines path and create a
 		// focusSetFile....
@@ -135,11 +135,15 @@ public class GTARTester {
 							for (int t : deltaTs) {
 								if (e < h)
 									continue;
+								
+								GTARFinderHeuristic gTARFinderHeuristic = new GTARFinderHeuristic("focusSet.txt", h, e,
+										dataGraphPath, debugMode, s, c, t);
+								gTARFinderHeuristic.findGTARs();
 
 								GTARFinderTwoSteps gTARFinderTwoSteps = new GTARFinderTwoSteps("focusSet.txt", h, e,
 										dataGraphPath, debugMode, s, c, t, 0);
 								gTARFinderTwoSteps.findGTARs();
-
+								System.out.println();
 								String settingStr = " focus was " + line + ", h:" + h + " , e:" + e + ", s:" + s
 										+ ", c:" + c + ", deltaT:" + t;
 
@@ -149,9 +153,9 @@ public class GTARTester {
 
 								sleepAndWakeUp();
 
-								GTARFinderHeuristic gTARFinderHeuristic = new GTARFinderHeuristic("focusSet.txt", h, e,
-										dataGraphPath, debugMode, s, c, t);
-								gTARFinderHeuristic.findGTARs();
+//								GTARFinderHeuristic gTARFinderHeuristic = new GTARFinderHeuristic("focusSet.txt", h, e,
+//										dataGraphPath, debugMode, s, c, t);
+//								gTARFinderHeuristic.findGTARs();
 
 								settingStr = " focus was " + line + ", h:" + h + " , e:" + e + ", s:" + s + ", c:" + c
 										+ ", deltaT:" + t;

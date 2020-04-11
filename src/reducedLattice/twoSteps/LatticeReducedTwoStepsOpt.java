@@ -131,7 +131,7 @@ public class LatticeReducedTwoStepsOpt implements ILattice {
 	int deltaT;
 	public long checkIfSubPatternStartTime;
 	public double checkIfSubPatternDuration = 0d;
-	private double startTime;
+	public double startTime;
 
 	/**
 	 * for static top-k finder

@@ -81,9 +81,9 @@ public class FastTest {
 		// }
 		// });
 
-		for (String d : datesSet) {
-			System.out.println(d);
-		}
+//		for (String d : datesSet) {
+//			System.out.println(d);
+//		}
 
 		tx1.success();
 		tx1.close();

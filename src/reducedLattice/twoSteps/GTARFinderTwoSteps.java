@@ -151,8 +151,7 @@ public class GTARFinderTwoSteps {
 		// generate rules
 
 		double ruleGeneratorStartTime = System.nanoTime();
-		RuleGenerator rg = new RuleGenerator(lattice, maxAllowedEdges, deltaT, supportThreshold, confidenceThreshold,
-				minTimestamp, maxTimestamp);
+		RuleGenerator rg = new RuleGenerator(lattice, maxAllowedEdges, deltaT, supportThreshold, confidenceThreshold,minTimestamp, maxTimestamp);
 		rg.timebound = this.timebound;
 		rg.generateRules(startTime, ruleGeneratorStartTime);
 		double ruleGeneratorDuration = (System.nanoTime() - rg.ruleGeneratorStartTime) / 1e6;
@@ -386,17 +385,28 @@ public class GTARFinderTwoSteps {
 		avgDegrees = Dummy.DummyFunctions.getAvgOutDegrees(dataGraph);
 		// STAT Of the DB END
 
+		minTimestamp = 0;
+		maxTimestamp = 1;
+		
 		// find min timestamp and max timestamp:
-		minTimestamp = Integer.MAX_VALUE;
-		maxTimestamp = 0;
-
-		for (Relationship rel : dataGraph.getAllRelationships()) {
-			ArrayList<Integer> timePoints = TimeIntervalsOperation
-					.getArrayListOfArray((int[]) rel.getProperty("timepoints"));
-
-			minTimestamp = Math.min(minTimestamp, timePoints.get(0));
-			maxTimestamp = Math.max(maxTimestamp, timePoints.get(timePoints.size() - 1));
-		}
+//		minTimestamp = Integer.MAX_VALUE;
+//		maxTimestamp = 0;
+//
+//		for (Relationship rel : dataGraph.getAllRelationships()) {
+//			String temp = (String) rel.getProperty("timepoints");
+//			String[] tempList = temp.split(";");
+//			int[] tempTimePoints = new int[tempList.length]; int i = 0;
+//			for (String item:tempList) {
+//				tempTimePoints[i] = Integer.parseInt(tempList[i]);
+//				i++;
+//			}
+//				
+//			ArrayList<Integer> timePoints = TimeIntervalsOperation
+//					.getArrayListOfArray(tempTimePoints);
+//
+//			minTimestamp = Math.min(minTimestamp, timePoints.get(0));
+//			maxTimestamp = Math.max(maxTimestamp, timePoints.get(timePoints.size() - 1));
+//		}
 
 		System.out.println("minTimestamp:" + minTimestamp);
 		System.out.println("maxTimestamp:" + maxTimestamp);
